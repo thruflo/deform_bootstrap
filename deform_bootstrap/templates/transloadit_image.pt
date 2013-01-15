@@ -1,0 +1,34 @@
+<input type="hidden" name="__start__" value="${field.name}:mapping"/>
+<div>
+  <c tal:condition="field.widget.should_render_config" tal:omit-tag="">
+    <input type="hidden" name="params" value="${field.widget.config_str}" />
+    <input type="hidden" name="signature" value="${field.widget.signature}" />
+  </c>
+  <div class="fileupload fileupload-${cstruct['small'] and 'exists' or 'new'}"
+      data-provides="fileupload">
+    <div class="fileupload-new thumbnail ${field.widget.css_class}">
+      <img src="${cstruct['small']}" tal:condition="cstruct['small']" />
+      <img tal:condition="not cstruct['small']" />
+    </div>
+    <div class="fileupload-preview fileupload-exists thumbnail ${field.widget.thumbnail_class}">
+      <img src="${cstruct['small']}" tal:condition="cstruct['small']" />
+    </div>
+    <div>
+      <div class="upload-button-container">
+        <span class="btn btn-file">
+          <span class="fileupload-new" i18n:translate="">Choose an image</span>
+          <span class="fileupload-exists" i18n:translate="">Change image</span>
+          <input id="${field.oid}" type="file" name="${field.name}"
+              tal:attributes="class field.widget.css_class"
+          />
+        </span>
+      </div>
+      <div class="upload-button-container">
+        <a href="#" class="btn fileupload-exists" data-dismiss="fileupload"
+            i18n:translate="">
+          Remove image</a>
+      </div>
+    </div>
+  </div>
+</div>
+<input type="hidden" name="__end__" value="${field.name}:mapping"/>
