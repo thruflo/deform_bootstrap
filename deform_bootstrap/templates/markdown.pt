@@ -1,0 +1,31 @@
+<input type="hidden" name="__start__" value="${field.name}:mapping"/>
+<div tal:define="cols cols|field.widget.cols;
+                 rows rows|field.widget.rows;
+                 delayed_load delayed_load|field.widget.delayed_load;
+                 oid oid|field.oid;
+                 name name|field.name;"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n" 
+    i18n:domain="deform"
+    tal:omit-tag="">
+  <textarea id="${oid}" name="${name}" class="markdown"
+      tal:content="structure cstruct"
+  />
+  <script language="javascript" type="text/javascript">
+    (function($){
+      // util.
+      markdownTitle = function(markItUp, char) {
+        heading = '';
+        n = $.trim(markItUp.selection||markItUp.placeHolder).length;
+        for(i = 0; i < n; i++) {
+          heading += char;
+        }
+        return '\n'+heading+'\n';
+      };
+      // callback.
+      deform.addCallback('${oid}', function(oid) {
+        $('#' + oid).markItUp(markitupoptions);
+      });
+    })(jQuery);
+  </script>
+</div>
+<input type="hidden" name="__end__" value="${field.name}:mapping"/>
