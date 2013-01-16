@@ -1,17 +1,17 @@
 <input type="hidden" name="__start__" value="${field.name}:mapping"/>
-<div>
+<div tal:define="has_image cstruct and cstruct.get('small') or False">
   <c tal:condition="field.widget.should_render_config" tal:omit-tag="">
     <input type="hidden" name="params" value="${field.widget.config_str}" />
     <input type="hidden" name="signature" value="${field.widget.signature}" />
   </c>
-  <div class="fileupload fileupload-${cstruct['small'] and 'exists' or 'new'}"
+  <div class="fileupload fileupload-${has_image and 'exists' or 'new'}"
       data-provides="fileupload">
     <div class="fileupload-new thumbnail ${field.widget.css_class}">
-      <img src="${cstruct['small']}" tal:condition="cstruct['small']" />
-      <img tal:condition="not cstruct['small']" />
+      <img src="${cstruct['small']}" tal:condition="has_image" />
+      <img tal:condition="not has_image" />
     </div>
     <div class="fileupload-preview fileupload-exists thumbnail ${field.widget.thumbnail_class}">
-      <img src="${cstruct['small']}" tal:condition="cstruct['small']" />
+      <img src="${cstruct['small']}" tal:condition="has_image" />
     </div>
     <div>
       <div class="upload-button-container">
