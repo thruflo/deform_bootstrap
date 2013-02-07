@@ -7,8 +7,7 @@
   <div class="fileupload fileupload-${has_image and 'exists' or 'new'}"
       data-provides="fileupload">
     <div class="fileupload-new thumbnail ${field.widget.css_class}">
-      <img src="${cstruct['small']}" tal:condition="has_image" />
-      <img tal:condition="not has_image" />
+      <img />
     </div>
     <div class="fileupload-preview fileupload-exists thumbnail ${field.widget.thumbnail_class}">
       <img src="${cstruct['small']}" tal:condition="has_image" />
@@ -30,5 +29,11 @@
       </div>
     </div>
   </div>
+  <c tal:condition="has_image" tal:omit-tag="">
+    <input type="hidden" name="small" value="${cstruct['small']}" />
+    <input type="hidden" name="medium" value="${cstruct['medium']}" />
+    <input type="hidden" name="large" value="${cstruct['large']}" />
+    <input type="hidden" name="original" value="${cstruct['original']}" />
+  </c>
 </div>
 <input type="hidden" name="__end__" value="${field.name}:mapping"/>
