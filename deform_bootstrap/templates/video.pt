@@ -1,0 +1,22 @@
+<div tal:define="css_class css_class|field.widget.css_class;
+    has_video cstruct and cstruct.get('url') or False;
+    name name|field.name;
+    oid oid|field.oid;
+    size size|field.widget.size;
+    style style|field.widget.style|None"
+    tal:omit-tag="">
+  <div class="video-preview thumbnail video-thumbnail}">
+    <img src="${cstruct['thumbnail_url']}" tal:condition="has_video" />
+  </div>
+  <div class="video-input">
+    <input type="text"
+        name="${name}"
+        id="${oid}"
+        tal:attributes="class css_class;
+        placeholder getattr(field.widget, 'placeholder', nothing);
+        size size;
+        style style;
+        value cstruct['url'] if has_video else ''"
+    />
+  </div>
+</div>
