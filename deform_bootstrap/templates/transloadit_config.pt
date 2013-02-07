@@ -1,0 +1,2 @@
+<input type="hidden" name="params" value="${field.widget.config_str}" />
+<input type="hidden" name="signature" value="${field.widget.signature}" />
