@@ -1,5 +1,6 @@
 <input type="hidden" name="__start__" value="${field.name}:mapping"/>
-<div tal:define="has_image cstruct and cstruct.get('small') or False">
+<div tal:define="has_image cstruct and cstruct.get('small') or False;
+    allow_remove getattr(field, 'allow_remove', False)">
   <c tal:condition="field.widget.should_render_config" tal:omit-tag="">
     <input type="hidden" name="params" value="${field.widget.config_str}" />
     <input type="hidden" name="signature" value="${field.widget.signature}" />
@@ -22,7 +23,7 @@
           />
         </span>
       </div>
-      <div class="upload-button-container">
+      <div class="upload-button-container" tal:condition="allow_remove">
         <a href="#" class="btn fileupload-exists" data-dismiss="fileupload"
             i18n:translate="">
           Remove image</a>
