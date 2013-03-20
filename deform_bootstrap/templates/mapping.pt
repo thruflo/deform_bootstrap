@@ -1,26 +1,28 @@
-<fieldset i18n:domain="deform">
-
-  <input type="hidden" name="__start__" value="${field.name}:mapping"/>
-
-  <legend tal:condition="field.title">${field.title}</legend>
-
-  <div class="clearfix alert alert-message error" tal:condition="field.errormsg">
-    <p i18n:translate="">
-      There was a problem with this section
-    </p>
-    <p>${field.errormsg}</p>
-  </div>
-  
-  <div tal:condition="field.description">
-    ${field.description}
-  </div>
-
-  <div
-      tal:define="rndr field.renderer;
-                  tmpl field.widget.item_template"
-      tal:repeat="f field.children"
-      tal:replace="structure rndr(tmpl,field=f,cstruct=cstruct.get(f.name,null))" />
-
-  <input type="hidden" name="__end__" value="${field.name}:mapping"/>
-
-</fieldset>
+<div class="mapping-wrapper" id="form-section-${field.name}">
+  <fieldset i18n:domain="deform">
+    <input type="hidden" name="__start__" value="${field.name}:mapping"/>
+    <div class="legend-scroll-buffer" tal:condition="field.title"></div>
+    <div class="legend-wrapper" tal:condition="field.title">
+      <legend data-toggle="collapse" data-target="#form-section-container-${field.name}">
+        <span class="caret pull-right"></span>
+        ${field.title}
+      </legend>
+    </div>
+    <div id="form-section-container-${field.name}" class="collapse in">
+      <div class="clearfix alert alert-message error" tal:condition="field.errormsg">
+        <p i18n:translate="">
+          There was a problem with this section
+        </p>
+        <p>${field.errormsg}</p>
+      </div>
+      <div tal:condition="field.description">
+        ${field.description}
+      </div>
+      <div tal:define="rndr field.renderer; tmpl field.widget.item_template"
+          tal:repeat="f field.children"
+          tal:replace="structure rndr(tmpl,field=f,cstruct=cstruct.get(f.name,null))"
+      />
+    </div>
+    <input type="hidden" name="__end__" value="${field.name}:mapping"/>
+  </fieldset>
+</div>
