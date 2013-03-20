@@ -1,14 +1,14 @@
-<div class="mapping-wrapper" id="form-section-${field.name}">
+<div class="mapping-wrapper" id="${field.name}-section">
   <fieldset i18n:domain="deform">
     <input type="hidden" name="__start__" value="${field.name}:mapping"/>
     <div class="legend-scroll-buffer" tal:condition="field.title"></div>
     <div class="legend-wrapper" tal:condition="field.title">
-      <legend data-toggle="collapse" data-target="#form-section-container-${field.name}">
+      <legend data-toggle="collapse" data-target="#${field.name}-section-container">
         <span class="caret pull-right"></span>
         ${field.title}
       </legend>
     </div>
-    <div id="form-section-container-${field.name}" class="collapse in">
+    <div id="${field.name}-section-container" class="collapse in">
       <div class="clearfix alert alert-message error" tal:condition="field.errormsg">
         <p i18n:translate="">
           There was a problem with this section
