@@ -19,4 +19,15 @@
         value cstruct['url'] if has_video else ''"
     />
   </div>
+  <tal:errors
+      condition="field.error and not field.widget.hidden"
+      repeat="child field.error.children">
+    <tal:errors tal:repeat="msg child.messages()">
+      <span tal:condition="msg"
+          class="help-block ${field.widget.error_class}"
+          i18n:translate="">
+        ${child.node.title}: ${msg}
+      </span>
+    </tal:errors>
+  </tal:errors>
 </div>
