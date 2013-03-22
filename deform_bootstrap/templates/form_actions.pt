@@ -1,0 +1,14 @@
+<div class="mapping-wrapper" id="${field.name}-section">
+  <div tal:condition="buttons" class="form-actions">
+    <tal:block repeat="button buttons">
+      <input
+          tal:attributes="disabled button.disabled"
+          id="${field.oid}"
+          name="${button.name}"
+          type="${button.type}"
+          class="btn ${repeat.button.start and 'btn-primary' or ''}"
+          value="${button.title}"
+      />
+    </tal:block>
+  </div>
+</div>

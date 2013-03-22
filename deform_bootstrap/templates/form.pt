@@ -36,17 +36,14 @@
 
     <div tal:condition="field.buttons" tal:omit-tag="inline" class="form-actions">
       <tal:block repeat="button field.buttons">
-        <button
+        <input
             tal:attributes="disabled button.disabled"
             id="${field.formid+button.name}"
             name="${button.name}"
             type="${button.type}"
             class="btn ${repeat.button.start and 'btn-primary' or ''}"
-            value="${button.value}">
-          <i tal:condition="hasattr(button, 'icon') and button.icon"
-                     class="${button.icon}"></i>
-          ${button.title}
-        </button>
+            value="${button.title}"
+        />
       </tal:block>
     </div>
 
