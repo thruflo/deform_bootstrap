@@ -1,0 +1,5 @@
+<div class="mapping-wrapper" id="${field.name}-section">
+  <div class="deform-panel" id="${field.oid}">
+    <c tal:replace="structure panel" />
+  </div>
+</div>
