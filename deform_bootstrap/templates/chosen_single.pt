@@ -12,10 +12,21 @@
 
   <script type="text/javascript">
     deform.addCallback(
-        '${field.oid}',
-        function(oid) {
-            $('#' + oid).chosen({allow_single_deselect: true});
-        }
+      '${field.oid}',
+      function(oid) {
+        $('#' + oid).chosen({allow_single_deselect: true}).change(
+          function (event) {
+            $collapse = $(this).parent('.collapse');
+            if ($collapse) {
+              // Force the thing to un-focus. This is because we have hacked the
+              // display to static to make sure it isn't clipped by the unavoidably
+              // overflow hidden parents. So when selected we want it to close up
+              // again nicely.
+              $(this).parent().click();
+            }
+          }
+        );
+      }
     );
   </script>
 </div>
