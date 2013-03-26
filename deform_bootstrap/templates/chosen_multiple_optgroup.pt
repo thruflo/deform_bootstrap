@@ -1,0 +1,25 @@
+<input type="hidden" name="__start__" value="${field.name}:sequence"/>
+  <select name="${field.name}"
+      id="${field.oid}"
+      class="i-can-haz-chzn-select"
+      multiple="multiple"
+      tal:attributes="size field.widget.size;
+      data-placeholder getattr(field.widget, 'placeholder', nothing)">
+    <optgroup tal:repeat="group values" label="${group['label']}">
+      <option tal:repeat="(value, description) group['values']"
+          tal:attributes="selected value in cstruct and 'selected';
+          class field.widget.css_class"
+          value="${value}">
+        ${description}
+      </option>
+    </optgroup>
+  </select>
+  <script type="text/javascript">
+    deform.addCallback(
+        '${field.oid}',
+        function(oid) {
+            $('#' + oid).chosen();
+        }
+    );
+  </script>
+<input type="hidden" name="__end__" value="${field.name}:sequence"/>
