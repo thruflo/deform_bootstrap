@@ -184,3 +184,18 @@ class ChosenMultipleWidget(Widget):
         if isinstance(pstruct, basestring):
             return (pstruct,)
         return tuple(pstruct)
+
+
+class MultipleSelectGroupsWidget(ChosenOptGroupWidget):
+    """A multiple select widget with option groups."""
+    
+    template = 'chosen_multiple_optgroup'
+    
+    def deserialize(self, field, pstruct):
+        if pstruct is colander.null:
+            return colander.null
+        if isinstance(pstruct, basestring):
+            return (pstruct,)
+        return tuple(pstruct)
+    
+
