@@ -10,9 +10,17 @@
   tal:define="inline getattr(field, 'bootstrap_form_style', None) == 'form-inline'">
   
   <fieldset>
-
-    <legend tal:condition="field.title">${field.title}</legend>
-
+    
+    <!--div class="legend-wrapper" id="form-section-${field.name}"
+        tal:condition="field.title">
+      <legend>
+        ${field.title}
+      </legend>
+    </div-->
+  <legend tal:condition="field.title">
+    ${field.title}
+  </legend>
+    
     <input type="hidden" name="_charset_" />
     <input type="hidden" name="__formid__" value="${field.formid}"/>
 

@@ -193,8 +193,7 @@ class TransloaditConfigWidget(HiddenWidget):
     template = 'transloadit_config'
 
 
-@colander.deferred
-def transloadit_image_widget(node, kw, get_config=None, widget_cls=None):
+def _transloadit_image_widget(node, kw, get_config=None, widget_cls=None):
     """Configure the schema node with ``template_id_key`` to get
       the template if to use from your ini settings, e.g.::
       
@@ -228,8 +227,9 @@ def transloadit_image_widget(node, kw, get_config=None, widget_cls=None):
             allow_remove=allow_remove, category=category,
             should_render_config=should_render_config)
 
-@colander.deferred
-def transloadit_config_widget(node, kw, get_config=None, widget_cls=None):
+transloadit_image_widget = colander.deferred(_transloadit_image_widget)
+
+def _transloadit_config_widget(node, kw, get_config=None, widget_cls=None):
     """As with ``transloadit_image_widget`` but a ``TransloaditConfigWidget``."""
     
     # Compose.
@@ -250,6 +250,8 @@ def transloadit_config_widget(node, kw, get_config=None, widget_cls=None):
     # Return the widget.
     return widget_cls(config_str=config_str, signature=signature,
             should_render_config=should_render_config, category=category)
+
+transloadit_config_widget = colander.deferred(_transloadit_config_widget)
 
 @colander.deferred
 def deferred_template_id_key(node, kw):

@@ -1,0 +1,50 @@
+<input type="hidden" name="__start__" value="${field.name}:mapping"/>
+<div id="${field.oid}-container"
+    tal:define="has_file cstruct and cstruct.get('original') or False;
+    allow_remove getattr(field.widget, 'allow_remove', False)">
+  <c tal:condition="field.widget.should_render_config" tal:omit-tag="">
+    <input type="hidden" name="params" value="${field.widget.config_str}" />
+    <input type="hidden" name="signature" value="${field.widget.signature}" />
+  </c>
+  <div class="fileupload fileupload-${has_file and 'exists' or 'new'}"
+      data-provides="fileupload">
+    <div class="input-append">
+      <div class="uneditable-input">
+        <i class="icon-file fileupload-exists"></i>
+        <span class="fileupload-preview">
+          <c tal:replace="python: cstruct['original'].split('/')[-1]"
+              tal:condition="has_file"
+          />
+        </span>
+      </div>
+      <span class="btn btn-file">
+        <span class="fileupload-new">Select file</span>
+        <span class="fileupload-exists">Change</span>
+        <input id="${field.oid}" type="file" name="${field.name}"
+            tal:attributes="class field.widget.css_class"
+        />
+      </span>
+      <a href="#" class="btn fileupload-exists" data-dismiss="fileupload"
+          tal:condition="allow_remove">
+        Remove</a>
+    </div>
+  </div>
+  <c tal:condition="has_file" tal:omit-tag="">
+    <input class="existing_data" type="hidden" name="original"
+        value="${cstruct['original']}"
+    />
+    <script language="javascript" type="text/javascript">
+      (function ($) {
+        deform.addCallback('${field.oid}', function (oid) {
+          var container = $('#' + oid + '-container');
+          var file_input = container.find(':file');
+          var data_inputs = container.find('.existing_data');
+          file_input.on('change.fileupload', function (event) {
+            data_inputs.remove();
+          });
+        });
+      })(jQuery);
+    </script>
+  </c>
+</div>
+<input type="hidden" name="__end__" value="${field.name}:mapping"/>
