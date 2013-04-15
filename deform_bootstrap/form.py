@@ -43,6 +43,11 @@ class FormView(object):
     # Class object of the type of form to be created.
     form_class = Form
     
+    # Should the view pre-render the form, or leave it for the template to
+    # call (and this make the markup rendering cacheable). Subclasses should
+    # set this value to ``False`` to render the form manually / cacheably.
+    should_render_form = True
+    
     # Name, e.g.: render in a reusable template. Override on a sub class
     # by subclass basis.
     @property
@@ -189,12 +194,13 @@ class FormView(object):
         # Render the form, in preparation for building a dictionary of
         # variables to pass to the template.
         if error:
-            rendered_form = error.render()
+            render_form = error.render
         else: # If we didn't need to validate, use the default appstruct.
             if appstruct is None:
                 appstruct = self.default_appstruct
             args = (appstruct,) if appstruct else ()
-            rendered_form = form.render(*args)
+            render_form = lambda: form.render(*args)
+        rendered_form = render_form() if self.should_render_form else None
         
         # Instantiate the template variables. Note we keep to the convention of
         # passing in the rendered form as ``form`` and provide the original
@@ -202,10 +208,11 @@ class FormView(object):
         template_vars = {
             'appstruct': appstruct,
             'error': error,
-            'form': rendered_form,
             'form_instance': form,
             'form_name': self.form_name,
-            'form_sections': self.top_level_sections(form)
+            'form_sections': self.top_level_sections(form),
+            'render_form': render_form,
+            'form': rendered_form
         }
         
         # If the response was not None, assume it was an iterable to update
