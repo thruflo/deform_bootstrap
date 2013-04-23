@@ -59,7 +59,7 @@ class CacheableWidgetMixin(object):
           ['a', 'b', 'c']
       
       The point of all of this being to delay populating the widget's values
-      until the widget is serialised. Instead of passing a rendered ``form``
+      until the widget is serialized. Instead of passing a rendered ``form``
       through to the template, as per the standard ``pyramid_deform.FormView``
       api, we pass through a ``render_form`` function, which delays db query
       execution to within the template scope, which makes them cacheable, i.e.:
@@ -139,7 +139,7 @@ class CacheableWidgetMixin(object):
         # If we weren't passed any cache key args, walk away.
         key_args = getattr(self, 'cache_key_args', None)
         if not key_args:
-            return serialise()
+            return serialize()
         
         # Otherwise get the cache key and use it to cache the output.
         request = self.request

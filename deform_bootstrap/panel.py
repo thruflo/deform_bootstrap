@@ -15,7 +15,7 @@ import colander
 from deform.widget import Widget
 
 class PanelWidget(Widget):
-    """A widget that serialises to a rendered panel."""
+    """A widget that serializes to a rendered panel."""
     
     category = 'structural'
     
@@ -45,7 +45,7 @@ class PanelWidget(Widget):
         return rendered_panel
     
     def deserialize(self, field, pstruct):
-        """Don't deserialise anything."""
+        """Don't deserialize anything."""
         
         return colander.null
     
