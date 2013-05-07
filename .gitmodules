@@ -1,3 +1,0 @@
-[submodule "deform_bootstrap/static/twitter_bootstrap"]
-	path = deform_bootstrap/static/twitter_bootstrap
-	url = git://github.com/twitter/bootstrap.git
