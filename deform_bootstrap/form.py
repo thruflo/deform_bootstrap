@@ -88,6 +88,7 @@ class FormView(object):
     def failure(self, error):
         """Handle a validation error."""
         
+        self.request.response.status_int = 400
         return None
     
     def complete(self, template_vars):
@@ -111,6 +112,11 @@ class FormView(object):
                 continue
             sections.append((name, title))
         return sections
+    
+    def should_return(self, value):
+        """Should we return ``value`` without using the complete machinery?"""
+        
+        return self.request.is_response(value)
     
     
     # Boilerplate.
@@ -188,7 +194,7 @@ class FormView(object):
             response = self.success(appstruct)
         
         # If the success or failure method returned a response, return that.
-        if self.request.is_response(response):
+        if self.should_return(response):
             return response
         
         # Render the form, in preparation for building a dictionary of
@@ -227,5 +233,30 @@ class FormView(object):
         """Instantiate with the current ``request``."""
         
         self.request = request
+    
+
+
+class JSONFormView(FormView):
+    """Special case FormView that skips the form template rendering in favour
+      of returning JSON data.
+    """
+    
+    def failure(self, validation_failure):
+        """Return the error as a dict."""
+        
+        self.request.response.status_int = 400
+        return validation_failure.error.asdict()
+    
+    def __call__(self):
+        """Cut out the template rendering makarky."""
+        
+        form, error, appstruct = self.validate()
+        
+        data = None
+        if error is not None:
+            data = self.failure(error)
+        if appstruct is not None:
+            data = self.success(appstruct)
+        return data if data is not None else {}
     
 
