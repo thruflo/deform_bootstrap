@@ -7,6 +7,7 @@ logger = logging.getLogger(__name__)
 
 from deform.exception import ValidationFailure
 from deform.form import Form
+from deform.form import Button
 
 class FormView(object):
     """Base class for views rendering and validating deform forms."""
@@ -113,10 +114,20 @@ class FormView(object):
             sections.append((name, title))
         return sections
     
+    def should_ignore(self, request_data):
+        for action in self.ignore_actions:
+            if action in request_data:
+                return True
+    
     def should_return(self, value):
         """Should we return ``value`` without using the complete machinery?"""
         
         return self.request.is_response(value)
+    
+    def should_validate(self):
+        """Should we validate the request?"""
+        
+        return self.request.method in self.validate_methods
     
     
     # Boilerplate.
@@ -135,7 +146,7 @@ class FormView(object):
         form = self.prepare(form)
         
         # Determine whether we need to validate the request.
-        should_validate = self.request.method in self.validate_methods
+        should_validate = self.should_validate()
         if should_validate:
             # Get a handle on the request data.
             if self.request_data_property:
@@ -144,10 +155,8 @@ class FormView(object):
                 data_property = self.request.method
             request_data = getattr(self.request, data_property, {})
             # See if we should ignore this action.
-            for action in self.ignore_actions:
-                if action in request_data:
-                    should_validate = False
-                    break
+            if self.should_ignore(request_data):
+                should_validate = False
         
         # Prepare the return values.
         error = None
@@ -235,6 +244,64 @@ class FormView(object):
         self.request = request
     
 
+
+class FormPanel(FormView):
+    """Like a form view, but designed to be used as the callable for a
+      pyramid_layout panel.
+      
+      Note that multiple panels can be rendered and handled. By default
+      these can use the ``ignore_actions`` list to see whether they should
+      validate the request.  Alternatively, they can override the
+      ``self.should_validate()`` method.
+    """
+    
+    # The args passed to the ``${panel(...)}`` function are stored here.
+    panel_args = None
+    panel_kwargs = None
+    
+    # Session flash message queue.
+    @property
+    def flash_queue(self):
+        return self.schema.__class__.__name__.lower()
+    
+    def should_ignore(self, request_data):
+        for action in self.ignore_actions:
+            if action in request_data:
+                return True
+        for item in self.buttons:
+            b = Button(name=item)
+            if b.value in request_data:
+                return False
+        return True
+    
+    def should_return(self, value):
+        """We never want to return an HTTP response from a panel."""
+        
+        return False
+    
+    def __call__(self, *args, **kwargs):
+        """Default to just rendering the form."""
+        
+        # Store the panel args, in case other methods want to use them.
+        self.panel_args = args
+        self.panel_kwargs = kwargs
+        
+        # Then do the default.
+        data = super(FormPanel, self).__call__()
+        
+        # Reset the form if told to.
+        if data.get('reset_form'):
+            form = data['form_instance']
+            data['render_form'] = lambda: form.render(self.default_appstruct)
+        
+        # And append the flash queue.
+        data['flash_queue'] = self.flash_queue
+        return data
+    
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+    
 
 class JSONFormView(FormView):
     """Special case FormView that skips the form template rendering in favour
