@@ -1,0 +1,2 @@
+include UNLICENSE setup.cfg *.rst *.txt *.py
+recursive-include deform_bootstrap *.py *.js *.css *.png *.pt *.mako
