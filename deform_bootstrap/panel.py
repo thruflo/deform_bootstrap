@@ -18,6 +18,7 @@ class PanelWidget(Widget):
     """A widget that serializes to a rendered panel."""
     
     category = 'structural'
+    template = None
     
     def __init__(self, name, *args, **kwargs):
         self.panel_name = name
