@@ -20,7 +20,7 @@
           <span class="fileupload-new" i18n:translate="">Choose an image</span>
           <span class="fileupload-exists" i18n:translate="">Change image</span>
           <input id="${field.oid}" type="file" name="${field.name}"
-              tal:attributes="class field.widget.css_class"
+              class="form-control ${field.widget.css_class}"
           />
         </span>
       </div>

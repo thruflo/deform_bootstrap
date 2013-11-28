@@ -1,29 +1,21 @@
 <form
   id="${field.formid}"
-  class="deform ${field.bootstrap_form_style | 'form-horizontal'}
+  class="deform ${field.bootstrap_form_style | ' '}
          ${field.css_class}"
   action="${field.action}"
   method="${field.method}"
   enctype="${field.enctype | 'application/x-www-form-urlencoded'}"
   accept-charset="utf-8"
   i18n:domain="deform"
-  tal:define="inline getattr(field, 'bootstrap_form_style', None) == 'form-inline'">
+  tal:define="inline getattr(field, 'bootstrap_form_style', None) == 'form-inline'"
+  role="form">
   
   <fieldset>
-    
-    <!--div class="legend-wrapper" id="form-section-${field.name}"
-        tal:condition="field.title">
-      <legend>
-        ${field.title}
-      </legend>
-    </div-->
-  <legend tal:condition="field.title">
-    ${field.title}
-  </legend>
-    
+    <legend tal:condition="field.title">
+      ${field.title}
+    </legend>
     <input type="hidden" name="_charset_" />
     <input type="hidden" name="__formid__" value="${field.formid}"/>
-
     <div class="alert alert-block alert-error" tal:condition="field.error">
       <span class="errorMsgLbl" i18n:translate="">
         There was a problem with your submission
@@ -34,14 +26,12 @@
       </span>
       <p class="errorMsg">${field.errormsg}</p>
     </div>
-
-    <div
-        tal:define="rndr field.renderer;
+    <div tal:define="rndr field.renderer;
                     tmpl field.widget.item_template"
         tal:repeat="f field.children"
         tal:replace="structure
-                     rndr(tmpl,field=f,cstruct=cstruct.get(f.name, null))" />
-
+                     rndr(tmpl,field=f,cstruct=cstruct.get(f.name, null))"
+    />
     <div tal:condition="field.buttons" tal:omit-tag="inline" class="form-actions">
       <tal:block repeat="button field.buttons">
         <input
@@ -49,14 +39,12 @@
             id="${field.formid+button.name}"
             name="${button.name}"
             type="${button.type}"
-            class="btn ${repeat.button.start and 'btn-primary' or ''}"
+            class="btn ${repeat.button.start and ' ' or 'btn-info'}"
             value="${button.title}"
         />
       </tal:block>
     </div>
-
   </fieldset>
-
   <script type="text/javascript" tal:condition="field.use_ajax">
     deform.addCallback(
        '${field.formid}',
@@ -74,5 +62,4 @@
        }
     );
   </script>
-  
 </form>

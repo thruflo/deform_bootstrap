@@ -9,8 +9,8 @@
            value="${cstruct}"
            data-provide="typeahead"
            autocomplete="off"
+           class="form-control ${css_class}"
            tal:attributes="size size;
-                           class css_class;
                            style style;
                            placeholder getattr(field.widget, 'placeholder', nothing)"
            id="${oid}"/>

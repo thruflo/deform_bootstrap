@@ -1,7 +1,7 @@
 <input type="hidden" name="__start__" value="${field.name}:sequence"/>
   <select name="${field.name}"
       id="${field.oid}"
-      class="i-can-haz-chzn-select"
+      class="form-control i-can-haz-chzn-select"
       multiple="multiple"
       tal:attributes="size field.widget.size;
       data-placeholder getattr(field.widget, 'placeholder', nothing)">

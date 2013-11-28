@@ -12,9 +12,9 @@
     <input type="text"
         name="${name}"
         id="${oid}"
-        tal:attributes="class css_class;
+        class="form-control ${css_class}"
+        tal:attributes="size size;
         placeholder getattr(field.widget, 'placeholder', nothing);
-        size size;
         style style;
         value cstruct['url'] if has_video else ''"
     />

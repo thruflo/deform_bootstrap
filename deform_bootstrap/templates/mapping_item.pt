@@ -1,6 +1,6 @@
 <div tal:define="structural field.widget.hidden or
                             field.widget.category == 'structural'"
-     class="control-group ${field.error and 'error' or ''}"
+     class="form-group ${field.error and 'error' or ''}"
      id="item-${field.oid}"
      tal:omit-tag="structural"
      i18n:domain="deform">
@@ -11,7 +11,7 @@
     ${field.title}<span tal:condition="field.required"
           class="req" id="req-${field.oid}">*</span>
   </label>
-  <div class="controls" tal:omit-tag="structural">
+  <div tal:omit-tag="structural">
     <div tal:define="input_prepend field.widget.input_prepend | None;
         input_append field.widget.input_append  | None;
         prepend_class input_prepend and 'input-prepend' or '';
@@ -21,7 +21,7 @@
       <span class="add-on" tal:condition="input_prepend">${input_prepend}</span
       ><span tal:replace="structure field.serialize(cstruct).strip()"
       /><span class="add-on" tal:condition="input_append">${input_append}</span>
-      <span class="help-inline"
+      <span class="help-block"
             tal:condition="field.error and not field.widget.hidden and not field.typ.__class__.__name__=='Mapping'">
         <span
             tal:define="errstr 'error-%s' % field.oid"

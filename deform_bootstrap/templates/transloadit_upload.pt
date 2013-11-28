@@ -21,7 +21,7 @@
         <span class="fileupload-new">Select file</span>
         <span class="fileupload-exists">Change</span>
         <input id="${field.oid}" type="file" name="${field.name}"
-            tal:attributes="class field.widget.css_class"
+            class="form-control ${field.widget.css_class}"
         />
       </span>
       <a href="#" class="btn fileupload-exists" data-dismiss="fileupload"

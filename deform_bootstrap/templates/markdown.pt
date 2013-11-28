@@ -5,7 +5,7 @@
     xmlns:i18n="http://xml.zope.org/namespaces/i18n" 
     i18n:domain="deform"
     tal:omit-tag="">
-  <textarea id="${oid}" name="${name}" class="markdown"
+  <textarea id="${oid}" name="${name}" class="markdown form-control"
       tal:content="structure cstruct"
   />
   <script language="javascript" type="text/javascript">

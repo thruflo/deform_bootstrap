@@ -7,12 +7,12 @@
                   style style|field.widget.style|None;
 "
       tal:omit-tag="">
-    <input type="text" name="${name}" value="${cstruct}" 
-           tal:attributes="size size;
-                           class css_class;
-                           style style;
-                           placeholder getattr(field.widget, 'placeholder', nothing)"
-           id="${oid}"/>
+    <input type="text" name="${name}" value="${cstruct}"
+        id="${oid}" class="form-control ${field.widget.css_class}"
+        tal:attributes="size size;
+                        style style;
+                        placeholder getattr(field.widget, 'placeholder', nothing)"
+    />
     <script tal:condition="mask" type="text/javascript">
       deform.addCallback(
          '${oid}',
