@@ -8,16 +8,23 @@
   </c>
   <div class="fileupload fileupload-${has_file and 'exists' or 'new'}"
       data-provides="fileupload">
-    <div class="input-append">
-      <div class="uneditable-input">
-        <i class="icon-file fileupload-exists"></i>
+    <div class="input-append input-group">
+      <div class="form-control fileupload-exists">
+        <span class="glyphicon glyphicon-file"></span>
         <span class="fileupload-preview">
           <c tal:replace="python: cstruct['original'].split('/')[-1]"
               tal:condition="has_file"
           />
         </span>
       </div>
-      <span class="btn btn-file">
+      <style>
+        .fileupload .btn-file > input {
+          border: none;
+          -webkit-transform: none;
+                  transform: none;
+        }
+      </style>
+      <span class="btn btn-file input-group-addon">
         <span class="fileupload-new">Select file</span>
         <span class="fileupload-exists">Change</span>
         <input id="${field.oid}" type="file" name="${field.name}"
