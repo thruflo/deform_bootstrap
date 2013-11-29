@@ -6,15 +6,24 @@
     <input type="hidden" name="params" value="${field.widget.config_str}" />
     <input type="hidden" name="signature" value="${field.widget.signature}" />
   </c>
+  
+  
   <div class="fileupload fileupload-${has_image and 'exists' or 'new'}"
       data-provides="fileupload">
-    <div class="fileupload-new thumbnail ${field.widget.css_class}">
+    <div class="fileupload-new img-container ${field.widget.css_class}">
       <img />
     </div>
     <div class="fileupload-preview fileupload-exists thumbnail ${field.widget.thumbnail_class}">
       <img src="${cstruct['small']}" tal:condition="has_image" />
     </div>
     <div>
+      <style>
+        .fileupload .btn-file > input {
+          border: none;
+          -webkit-transform: none;
+                  transform: none;
+        }
+      </style>
       <div class="upload-button-container">
         <span class="btn btn-file">
           <span class="fileupload-new" i18n:translate="">Choose an image</span>

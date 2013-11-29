@@ -10,7 +10,7 @@
   tal:define="inline getattr(field, 'bootstrap_form_style', None) == 'form-inline'"
   role="form">
   
-  <fieldset>
+  <!--fieldset-->
     <legend tal:condition="field.title">
       ${field.title}
     </legend>
@@ -44,7 +44,7 @@
         />
       </tal:block>
     </div>
-  </fieldset>
+  <!--/fieldset-->
   <script type="text/javascript" tal:condition="field.use_ajax">
     deform.addCallback(
        '${field.formid}',

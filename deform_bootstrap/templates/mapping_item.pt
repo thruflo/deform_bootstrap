@@ -1,6 +1,6 @@
 <div tal:define="structural field.widget.hidden or
                             field.widget.category == 'structural'"
-     class="form-group ${field.error and 'error' or ''}"
+     class="form-group ${field.error and 'has-error' or ''}"
      id="item-${field.oid}"
      tal:omit-tag="structural"
      i18n:domain="deform">
@@ -28,7 +28,7 @@
             tal:repeat="msg field.error.messages()"
             tal:attributes="id repeat.msg.index==0 and errstr or
                             ('%s-%s' % (errstr, repeat.msg.index))"
-            class="${field.widget.error_class}">
+            class="${field.widget.error_class + 'has-error'}">
           ${msg}
         </span>
       </span>

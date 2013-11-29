@@ -5,7 +5,7 @@
     size size|field.widget.size;
     style style|field.widget.style|None"
     tal:omit-tag="">
-  <div class="video-preview thumbnail video-thumbnail}">
+  <div class="video-preview video-thumbnail">
     <img src="${cstruct['thumbnail_url']}" tal:condition="has_video" />
   </div>
   <div class="video-input">
