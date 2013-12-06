@@ -6,32 +6,32 @@
     <input type="hidden" name="params" value="${field.widget.config_str}" />
     <input type="hidden" name="signature" value="${field.widget.signature}" />
   </c>
-  <div class="fileupload fileupload-${has_file and 'exists' or 'new'}"
-      data-provides="fileupload">
+  <div class="fileinput fileinput-${has_file and 'exists' or 'new'}"
+      data-provides="fileinput">
     <div class="input-append input-group">
-      <div class="form-control fileupload-exists">
+      <div class="form-control fileinput-exists">
         <span class="glyphicon glyphicon-file"></span>
-        <span class="fileupload-preview">
+        <span class="fileinput-preview">
           <c tal:replace="python: cstruct['original'].split('/')[-1]"
               tal:condition="has_file"
           />
         </span>
       </div>
       <style>
-        .fileupload .btn-file > input {
+        .fileinput .btn-file > input {
           border: none;
           -webkit-transform: none;
                   transform: none;
         }
       </style>
       <span class="btn btn-file input-group-addon">
-        <span class="fileupload-new">Select file</span>
-        <span class="fileupload-exists">Change</span>
+        <span class="fileinput-new">Select file</span>
+        <span class="fileinput-exists">Change</span>
         <input id="${field.oid}" type="file" name="${field.name}"
             class="form-control ${field.widget.css_class}"
         />
       </span>
-      <a href="#" class="btn fileupload-exists" data-dismiss="fileupload"
+      <a href="#" class="btn fileinput-exists" data-dismiss="fileinput"
           tal:condition="allow_remove">
         Remove</a>
     </div>
@@ -46,7 +46,7 @@
           var container = $('#' + oid + '-container');
           var file_input = container.find(':file');
           var data_inputs = container.find('.existing_data');
-          file_input.on('change.fileupload', function (event) {
+          file_input.on('change.fileinput', function (event) {
             data_inputs.remove();
           });
         });

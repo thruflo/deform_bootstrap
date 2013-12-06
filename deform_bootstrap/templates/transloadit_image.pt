@@ -8,17 +8,17 @@
   </c>
   
   
-  <div class="fileupload fileupload-${has_image and 'exists' or 'new'}"
-      data-provides="fileupload">
-    <div class="fileupload-new img-container ${field.widget.css_class}">
+  <div class="fileinput fileinput-${has_image and 'exists' or 'new'}"
+      data-provides="fileinput">
+    <div class="fileinput-new img-container ${field.widget.css_class}">
       <img />
     </div>
-    <div class="fileupload-preview fileupload-exists thumbnail ${field.widget.thumbnail_class}">
+    <div class="fileinput-preview fileinput-exists thumbnail ${field.widget.thumbnail_class}">
       <img src="${cstruct['small']}" tal:condition="has_image" />
     </div>
     <div>
       <style>
-        .fileupload .btn-file > input {
+        .fileinput .btn-file > input {
           border: none;
           -webkit-transform: none;
                   transform: none;
@@ -26,15 +26,15 @@
       </style>
       <div class="upload-button-container">
         <span class="btn btn-file">
-          <span class="fileupload-new" i18n:translate="">Choose an image</span>
-          <span class="fileupload-exists" i18n:translate="">Change image</span>
+          <span class="fileinput-new" i18n:translate="">Choose an image</span>
+          <span class="fileinput-exists" i18n:translate="">Change image</span>
           <input id="${field.oid}" type="file" name="${field.name}"
               class="form-control ${field.widget.css_class}"
           />
         </span>
       </div>
       <div class="upload-button-container" tal:condition="allow_remove">
-        <a href="#" class="btn fileupload-exists" data-dismiss="fileupload"
+        <a href="#" class="btn fileinput-exists" data-dismiss="fileinput"
             i18n:translate="">
           Remove image</a>
       </div>
@@ -59,7 +59,7 @@
           var container = $('#' + oid + '-container');
           var file_input = container.find(':file');
           var data_inputs = container.find('.existing_data');
-          file_input.on('change.fileupload', function (event) {
+          file_input.on('change.fileinput', function (event) {
             data_inputs.remove();
           });
         });
