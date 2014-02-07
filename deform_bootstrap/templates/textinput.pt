@@ -7,7 +7,8 @@
                   style style|field.widget.style|None;
 "
       tal:omit-tag="">
-    <input type="text" name="${name}" value="${cstruct}" 
+    <input type="text" name="${name}"
+           value="${cstruct != 'None' and cstruct or ''}"
            tal:attributes="size size;
                            class css_class;
                            style style;

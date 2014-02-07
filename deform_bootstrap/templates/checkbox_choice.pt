@@ -8,7 +8,7 @@
                                class field.widget.css_class"
                type="checkbox"
                name="checkbox"
-               value="${value}"
+               value="${value != 'None' and value or ''}"
                id="${field.oid}-${repeat.choice.index}"/>
         ${title}
       </label>

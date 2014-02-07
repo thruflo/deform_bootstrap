@@ -6,7 +6,7 @@
       tal:omit-tag="">
     <input type="text"
            name="${name}"
-           value="${cstruct}"
+           value="${cstruct != 'None' and cstruct or ''}"
            data-provide="typeahead"
            autocomplete="off"
            tal:attributes="size size;
