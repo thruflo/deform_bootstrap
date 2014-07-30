@@ -6,7 +6,7 @@ from deform.tests.test_widget import DummyField, DummyRenderer, DummySchema
 
 class TestTypeaheadInputWidget(unittest.TestCase):
     def _makeOne(self, **kw):
-        from deform_bootstrap.widget import TypeaheadInputWidget
+        from deform_bootstrap2.widget import TypeaheadInputWidget
         return TypeaheadInputWidget(**kw)
 
     def test_serialize_null(self):

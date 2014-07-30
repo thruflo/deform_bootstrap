@@ -28,7 +28,7 @@ from deform.widget import HiddenWidget
 from deform.widget import TextInputWidget
 from pyramid_weblayer.hsts import ensure_secure_url
 
-from deform_bootstrap.base import OrderableCSRFSchema
+from deform_bootstrap2.base import OrderableCSRFSchema
 from .url import url_preparer
 from .url import url_validator
 
