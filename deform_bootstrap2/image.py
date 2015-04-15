@@ -160,7 +160,11 @@ def parse_transloadit_data(data_str, secure_url=None):
                     url = item.get('url')
                     # Use the ``original_id`` to get the target return value item.
                     original_id = item.get('original_id')
-                    target_index = index_lookup[field][original_id]
+                    try:
+                        target_index = index_lookup[field][original_id]
+                    except KeyError:
+                        logger.info(('index_lookup', field, 'not found', 'setting target_index to 0'))
+                        target_index = 0
                     try:
                         target = return_value[field][target_index]
                     except IndexError:
