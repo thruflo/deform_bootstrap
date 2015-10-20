@@ -9,7 +9,7 @@
       </legend>
     </div>
     <div id="${field.name}-section-container" class="collapse in">
-      <div class="clearfix alert alert-message error" tal:condition="field.errormsg">
+      <div class="clearfix alert alert-warning error" tal:condition="field.errormsg">
         <p i18n:translate="">
           There was a problem with this section
         </p>
