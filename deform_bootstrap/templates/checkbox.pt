@@ -1,0 +1,19 @@
+<tal:def tal:define="inline getattr(field.widget, 'inline', False);
+                     indicator getattr(field.widget, 'indicator', False);
+                     wrapper_cls getattr(field.widget, 'wrapper_cls', '');
+                     label_class inline and 'checkbox inline' or 'checkbox'">
+  <div class="${label_class} ${wrapper_cls}">
+    <label for="${field.oid}">
+      <input tal:define="name name|field.name;
+                         true_val true_val|field.widget.true_val;
+                         oid oid|field.oid"
+             type="checkbox"
+             name="${name}" value="${true_val}"
+             id="${oid}"
+             tal:attributes="checked cstruct == true_val;"
+      />
+      <span tal:condition="indicator" class="${indicator}"></span>
+      ${field.description}
+    </label>
+  </div>
+</tal:def>

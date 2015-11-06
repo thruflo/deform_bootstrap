@@ -2,8 +2,10 @@
 <tal:loop tal:repeat="choice field.widget.values">
   <tal:def tal:define="(value, title) choice;
                        inline getattr(field.widget, 'inline', False);
-                       label_class inline and 'radio inline' or 'radio'">
-    <div class="${label_class}">
+                       indicator getattr(field.widget, 'indicator', False);
+                       wrapper_cls getattr(field.widget, 'wrapper_cls', '');
+                       label_class inline and 'radio-inline' or 'radio'">
+    <div class="${label_class} ${wrapper_cls}">
       <label for="${field.oid}-${repeat.choice.index}">
         <input tal:attributes="checked value == cstruct;
                                class field.widget.css_class"
@@ -11,6 +13,7 @@
                name="${field.oid}"
                value="${value}"
                id="${field.oid}-${repeat.choice.index}"/>
+        <span tal:condition="indicator" class="${indicator}"></span>
         ${title}
       </label>
     </div>

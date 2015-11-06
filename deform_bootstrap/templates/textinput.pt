@@ -11,13 +11,14 @@
         id="${oid}" class="form-control ${field.widget.css_class}"
         tal:attributes="size size;
                         style style;
-                        placeholder getattr(field.widget, 'placeholder', nothing)"
+                        placeholder getattr(field.widget, 'placeholder', nothing);
+                        disabled getattr(field.widget, 'disabled', nothing)"
     />
     <script tal:condition="mask" type="text/javascript">
       deform.addCallback(
          '${oid}',
          function (oid) {
-            $("#" + oid).mask("${mask}", 
+            $("#" + oid).mask("${mask}",
                  {placeholder:"${mask_placeholder}"});
          });
     </script>
