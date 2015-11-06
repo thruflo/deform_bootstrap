@@ -16,10 +16,10 @@
     </legend>
     <input type="hidden" name="_charset_" />
     <input type="hidden" name="__formid__" value="${field.formid}"/>
-    <div class="alert alert-block alert-warning" tal:condition="field.error">
-      <span class="errorMsgLbl" i18n:translate="">
+    <div class="alert alert-block alert-danger" tal:condition="field.error">
+      <strong class="errorMsgLbl" i18n:translate="">
         There was a problem with your submission
-      </span>
+      </strong>
       <br />
       <span class="errorMsg" i18n:translate="">
         Errors have been highlighted below
