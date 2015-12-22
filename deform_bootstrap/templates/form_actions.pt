@@ -1,5 +1,6 @@
-<div class="mapping-wrapper" id="${field.name}-section">
-  <div tal:condition="buttons" class="form-actions">
+<div class="mapping-wrapper" id="${field.name}-section"
+    tal:define="actions_class getattr(field, 'actions_class', '')">
+  <div tal:condition="buttons" class="form-actions ${ actions_class }">
     <tal:block repeat="button buttons">
       <input
           tal:attributes="disabled button.disabled"

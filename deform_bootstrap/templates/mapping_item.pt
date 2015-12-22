@@ -1,6 +1,7 @@
-<div tal:define="structural field.widget.hidden or
-                            field.widget.category == 'structural'"
-     class="form-group ${field.error and 'has-error' or ''}"
+<div tal:define="
+     structural field.widget.hidden or field.widget.category == 'structural';
+     group_class getattr(field.widget, 'group_class', '');"
+     class="form-group ${group_class} ${field.error and 'has-error' or ''}"
      id="item-${field.oid}"
      tal:omit-tag="structural"
      i18n:domain="deform">

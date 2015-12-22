@@ -13,7 +13,6 @@
              tal:attributes="checked cstruct == true_val;"
       />
       <span tal:condition="indicator" class="${indicator}"></span>
-      ${field.description}
     </label>
   </div>
 </tal:def>

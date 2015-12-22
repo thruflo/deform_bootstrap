@@ -32,7 +32,7 @@
         tal:replace="structure
                      rndr(tmpl,field=f,cstruct=cstruct.get(f.name, null))"
     />
-    <div tal:condition="field.buttons" tal:omit-tag="inline" class="form-actions">
+    <div tal:condition="field.buttons" tal:omit-tag="inline" class="form-actions ${ getattr(field, 'actions_class', '') }">
       <tal:block repeat="button field.buttons">
         <input
             tal:attributes="disabled button.disabled"
