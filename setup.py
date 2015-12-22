@@ -24,7 +24,7 @@ tests_require = [
 
 setup(
     name='deform_bootstrap',
-    version='3.0.1',
+    version='3.1.0',
     description="Twitter Bootstrap compatible widgets, templates and styles for the deform form library",
     long_description=README + '\n\n' + CHANGES,
     classifiers=[
