@@ -16,15 +16,17 @@
     </legend>
     <input type="hidden" name="_charset_" />
     <input type="hidden" name="__formid__" value="${field.formid}"/>
-    <div class="alert alert-block alert-danger" tal:condition="field.error">
-      <strong class="errorMsgLbl" i18n:translate="">
-        There was a problem with your submission
-      </strong>
-      <br />
-      <span class="errorMsg" i18n:translate="">
-        Errors have been highlighted below
-      </span>
-      <p class="errorMsg">${field.errormsg}</p>
+    <div class="${ getattr(field, 'alert_class', '') }" tal:condition="field.error">
+      <div class="alert alert-block alert-danger">
+        <strong class="errorMsgLbl" i18n:translate="">
+          There was a problem with your submission
+        </strong>
+        <br />
+        <span class="errorMsg" i18n:translate="">
+          Errors have been highlighted below
+        </span>
+        <p class="errorMsg">${field.errormsg}</p>
+      </div>
     </div>
     <div tal:define="rndr field.renderer;
                     tmpl field.widget.item_template"
