@@ -35,7 +35,7 @@
       </span>
       <span class="help-block"
           tal:condition="field.description and not field.widget.hidden"
-          tal:define="structure_description '://' in field.description">
+          tal:define="structure_description '://' in field.description or '</' in field.description">
         <span tal:replace="structure field.description"
             tal:condition="structure_description"
         />
