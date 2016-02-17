@@ -336,7 +336,10 @@ class BaseTransloaditSchema(OrderableCSRFSchema):
                         i = 0
                         for cstruct_item in cstruct_items:
                             if cstruct_item[cstruct_item_key]:
-                                continue
+                                no_other_layer = cstruct_item[cstruct_item_key].get(cstruct_item_key, True)
+                                # XXX this fix {'image': {'image': u''}}
+                                if no_other_layer:
+                                    continue
                             cstruct_item[cstruct_item_key] = data_items[i]
                             i += 1
                         self.set_value(cstruct, cstruct_key, cstruct_items)
