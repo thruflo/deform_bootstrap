@@ -34,13 +34,13 @@ from .url import url_validator
 
 def get_signed_config(request, template_id_key):
     """Shared logic to generate and hash transloadit config."""
-    
+
     # Unpack the request.
     settings = request.registry.settings
     auth_key = settings.get('transloadit.auth_key')
     auth_secret = settings.get('transloadit.auth_secret')
     template_id = settings.get('transloadit.{0}'.format(template_id_key))
-    
+
     # Generate the config.
     expires_dt = datetime.now() + timedelta(days=1)
     expires_str = expires_dt.strftime('%Y/%m/%d %H:%M:%S')
@@ -50,17 +50,17 @@ def get_signed_config(request, template_id_key):
         'redirect_url': request.path
     }
     config_str = json.dumps(config)
-    
+
     # Sign it.
     signature = hmac.new(auth_secret, config_str, hashlib.sha1).hexdigest()
-    
+
     # And return
     return config_str, signature
 
 def parse_transloadit_data(data_str, secure_url=None):
     """Coerces a transloadit result JSON data string to a dict keyed
       by field name and secures any urls::
-      
+
           >>> data = {
           ...   'results': {
           ...     'small': [
@@ -80,7 +80,7 @@ def parse_transloadit_data(data_str, secure_url=None):
           ...     ]
           ...   }
           ... }
-          ... 
+          ...
           >>> data_str = json.dumps(data)
           >>> data = parse_transloadit_data(data_str)
           >>> data.keys()
@@ -91,24 +91,24 @@ def parse_transloadit_data(data_str, secure_url=None):
           [u'small', u'medium', u'original']
           >>> data[u'a'][1].values()
           [u'https://a.com/small2', u'https://a.com/medium2', u'https://a.com/original2']
-      
+
     """
-    
+
     # Compose.
     if secure_url is None:
         secure_url = ensure_secure_url
-    
+
     # Ignore null values.
     if not data_str:
         return {}
-    
+
     # Parse the json.
     try:
         data = json.loads(data_str)
     except Exception as err:
         logger.warn(err, exc_info=True)
         return {}
-    
+
     # The order of the items in the results dicts is not reliable, i.e.: in the
     # ``small`` dict, it may be [img1, img2] whereas in the ``large`` dict, it
     # may be ``[img2, img1]``. Thus, we need to use the ``original_id`` key of
@@ -123,12 +123,12 @@ def parse_transloadit_data(data_str, secure_url=None):
         original_id = item.get('id')
         index_lookup[field][original_id] = counters[field]
         counters[field] += 1
-    
+
     # Prepare the ``return_value[field]`` with a list of placeholder values,
     # so that data as we go along at any index, without having tp have already
     # inserted a real value at the previous indexes.
     return_value = defaultdict(lambda: [{} for item in range(len(uploads))])
-    
+
     # Now loop through the results to build the return value.
     results = data.get('results')
     if results:
@@ -152,7 +152,7 @@ def parse_transloadit_data(data_str, secure_url=None):
                 # example.
                 while key.startswith(':'):
                     key = key[1:]
-                # Look through the items, 
+                # Look through the items,
                 for item in items:
                     # The ``field`` is the name of the form input, e.g.: ``logo_image``.
                     field = item.get('field')
@@ -200,32 +200,32 @@ class TransloaditConfigWidget(HiddenWidget):
 def _transloadit_image_widget(node, kw, get_config=None, widget_cls=None):
     """Configure the schema node with ``template_id_key`` to get
       the template if to use from your ini settings, e.g.::
-      
+
           >>> node = SchemaNode(template_id_key='my_template_key')
-      
+
       Will get the template id in::
-      
+
           transloadit.my_template_key = ...
-      
+
       Defaults to ``transloadit.template_id``.
     """
-    
+
     # Compose.
     if get_config is None:
         get_config = get_signed_config
     if widget_cls is None:
         widget_cls = TransloaditImageWidget
-    
+
     # Unpack.
     request = kw['request']
     template_id_key = getattr(node, 'template_id_key', 'template_id')
     should_render_config = getattr(node, 'should_render_config', False)
     allow_remove = getattr(node, 'allow_remove', False)
     category = getattr(node, 'category', None)
-    
+
     # Get signed config.
     config_str, signature = get_signed_config(request, template_id_key)
-    
+
     # Return the widget.
     return widget_cls(config_str=config_str, signature=signature,
             allow_remove=allow_remove, category=category,
@@ -235,22 +235,22 @@ transloadit_image_widget = colander.deferred(_transloadit_image_widget)
 
 def _transloadit_config_widget(node, kw, get_config=None, widget_cls=None):
     """As with ``transloadit_image_widget`` but a ``TransloaditConfigWidget``."""
-    
+
     # Compose.
     if get_config is None:
         get_config = get_signed_config
     if widget_cls is None:
         widget_cls = TransloaditConfigWidget
-    
+
     # Unpack.
     request = kw['request']
     template_id_key = getattr(node, 'template_id_key', 'template_id')
     should_render_config = getattr(node, 'should_render_config', True)
     category = getattr(node, 'category', None)
-    
+
     # Get signed config.
     config_str, signature = get_signed_config(request, template_id_key)
-    
+
     # Return the widget.
     return widget_cls(config_str=config_str, signature=signature,
             should_render_config=should_render_config, category=category)
@@ -264,45 +264,45 @@ def deferred_template_id_key(node, kw):
 
 class BaseTransloaditSchema(OrderableCSRFSchema):
     """Base schema for forms that contain transloadit image fields.
-      
+
       Inherit from it and provide a mapping and settings key, e.g.::
-      
+
           >>> class MyImageUploadSchema(BaseTransloaditSchema):
           ...     transloadit_mapping = {'images.images': ['image']}
           ...     template_id_key = 'gallery_template'
-          ... 
-      
+          ...
+
       This class will look in your settings for a template id at
       ``transloadit.gallery_template`` and will populate ``images.images.0``,
       ``images.images.1`` etc.
-      
+
       If you're using a single or specific images, use e.g.:
       ``transloadit_mapping = {'logo': 'logo'}``, i.e.: use a string rather
       than a list.
     """
-    
+
     # E.g.: ``{'logo': 'logo'}`` or ``{'images.images': ['image']}``.
     transloadit_mapping = NotImplemented
     template_id_key = None
-    
+
     # Render the transloadit config.
     transloadit = colander.SchemaNode(
         colander.String(),
         widget=transloadit_config_widget,
         missing=None
     )
-    
+
     def deserialize(self, cstruct, parse_data=None):
         """Unpack the transloadit data into the right fields."""
-        
+
         # Compose.
         if parse_data is None:
             parse_data = parse_transloadit_data
-        
+
         # Ignore if no data.
         if not cstruct:
             return cstruct
-        
+
         # Get the transload it data and parse it into the right fields.
         data_str = cstruct.pop('transloadit', None)
         if data_str:
@@ -336,10 +336,13 @@ class BaseTransloaditSchema(OrderableCSRFSchema):
                         i = 0
                         for cstruct_item in cstruct_items:
                             if cstruct_item[cstruct_item_key]:
-                                no_other_layer = cstruct_item[cstruct_item_key].get(cstruct_item_key, True)
-                                # XXX this fix {'image': {'image': u''}}
-                                if no_other_layer:
+                                # XXX Fix one the dict has a single key that is empty.
+                                # {'image': {'image': u''}}
+                                if cstruct_item_key in cstruct_item[cstruct_item_key] and (len(cstruct_item[cstruct_item_key].keys())==1):
+                                    pass
+                                else:
                                     continue
+
                             cstruct_item[cstruct_item_key] = data_items[i]
                             i += 1
                         self.set_value(cstruct, cstruct_key, cstruct_items)
@@ -347,22 +350,22 @@ class BaseTransloaditSchema(OrderableCSRFSchema):
                         # images, e.g.: ``{'images.images': ['image']}``, so
                         # overwrite the values at that key.
                         self.set_value(cstruct, cstruct_key, data_items)
-        
+
         return super(BaseTransloaditSchema, self).deserialize(cstruct)
-    
+
     def __init__(self, *args, **kwargs):
         """Patch the ``template_id_key`` of the ``transloadit`` child node."""
-        
+
         target = self['transloadit']
         if self.template_id_key:
             target.template_id_key = self.template_id_key
-        
+
         super(BaseTransloaditSchema, self).__init__(*args, **kwargs)
-    
+
 
 class TransloaditImageSchema(colander.Schema):
     """Form fields for an image with small, medium, large and original varients."""
-    
+
     small = colander.SchemaNode(
         colander.String(),
         preparer=url_preparer,
@@ -388,10 +391,10 @@ class OptionalTransloaditImageSchema(colander.Schema):
     """Form fields for an optional image with small, medium, large and
       original varients.
     """
-    
+
     missing = {}
     allow_remove = True
-    
+
     small = colander.SchemaNode(
         colander.String(),
         preparer=url_preparer,
